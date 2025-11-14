@@ -22,6 +22,7 @@ import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { cors } from 'hono/cors';
 import { prettyJSON } from 'hono/pretty-json';
+import { serve } from '@hono/node-server';
 import { scriptRoute } from './routes/script.js';
 import { photosRoute } from './routes/photos.js';
 import { storybooksRoute } from './routes/storybooks.js';
@@ -267,7 +268,11 @@ console.log('  - GET  /storybook/styles      - List styles');
 console.log('  - GET  /health                - Health check');
 console.log('='.repeat(80) + '\n');
 
-export default {
-  port: PORT,
+// Start the server
+serve({
   fetch: app.fetch,
-};
+  port: PORT,
+});
+
+console.log(`✅ Server is running on http://localhost:${PORT}`);
+console.log(`🌐 Open http://localhost:${PORT} in your browser\n`);
