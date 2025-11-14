@@ -250,15 +250,15 @@ const envCheck = validateEnvironment();
 if (!envCheck.valid) {
   console.error('❌ Missing required environment variables:', envCheck.missing);
   console.error('Please set the following environment variables:');
-  envCheck.missing.forEach(key => console.error(\`  - \${key}\`));
+  envCheck.missing.forEach(key => console.error(`  - ${key}`));
   console.error('\nService will start but some features may not work.');
   console.error('='.repeat(80) + '\n');
 }
 
 console.log('✅ Environment validated');
-console.log(\`🚀 Server starting on port \${PORT}\`);
-console.log(\`\n🌐 Interactive UI: http://localhost:\${PORT}/\`);
-console.log(\`📖 API Documentation: http://localhost:\${PORT}/api\`);
+console.log(`🚀 Server starting on port ${PORT}`);
+console.log(`\n🌐 Interactive UI: http://localhost:${PORT}/`);
+console.log(`📖 API Documentation: http://localhost:${PORT}/api`);
 console.log('\n📋 API Endpoints:');
 console.log('  - POST /storybook/script      - Generate screenplay');
 console.log('  - POST /storybook/photos      - Generate images');
