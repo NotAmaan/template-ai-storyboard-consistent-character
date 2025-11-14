@@ -9,7 +9,9 @@
   },
   "scripts": {
     "dev": "mastra dev",
-    "build": "mastra build"
+    "build": "mastra build",
+    "services:dev": "tsx watch services/storybook/index.ts",
+    "services:start": "tsx services/storybook/index.ts"
   },
   "keywords": [
     "mastra",
@@ -37,7 +39,8 @@
     "@mastra/memory": "^0.12.0",
     "@modelcontextprotocol/server-filesystem": "^2025.7.29",
     "@types/pdfkit": "^0.17.2",
-    "canvas": "^3.1.2",
+    "@hono/zod-validator": "^0.4.1",
+    "hono": "^4.7.10",
     "jspdf": "^2.5.1",
     "pdfkit": "^0.17.1",
     "zod": "^3.22.4"
@@ -45,6 +48,7 @@
   "devDependencies": {
     "@types/node": "^24.2.0",
     "mastra": "^0.10.19-alpha.1",
+    "tsx": "^4.19.2",
     "typescript": "^5.9.2"
   }
 }
