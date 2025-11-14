@@ -305,6 +305,28 @@
     .recommended p {
       color: white;
     }
+
+    .idea-card {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .idea-card:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .idea-card p {
+      font-size: 0.9rem;
+      color: #495057;
+      margin: 0;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
@@ -319,6 +341,7 @@
         <button class="tab active" onclick="switchTab('complete')">Complete Storybook</button>
         <button class="tab" onclick="switchTab('script')">Script Only</button>
         <button class="tab" onclick="switchTab('photos')">Images Only</button>
+        <button class="tab" onclick="switchTab('ideas')">Story Ideas</button>
         <button class="tab" onclick="switchTab('styles')">Styles</button>
       </div>
 
@@ -338,15 +361,20 @@
               <label for="complete-style">Visual Style</label>
               <select id="complete-style">
                 <option value="Cinematic">Cinematic</option>
+                <option value="Photographic">Photographic</option>
                 <option value="Anime">Anime</option>
+                <option value="Manga">Manga</option>
                 <option value="Ghibli-esque">Ghibli-esque</option>
                 <option value="Disney-esque">Disney-esque</option>
                 <option value="Comic Book">Comic Book</option>
+                <option value="Graphic Novel">Graphic Novel</option>
+                <option value="Watercolor">Watercolor</option>
+                <option value="Low Poly">Low Poly</option>
+                <option value="Pixel Art">Pixel Art</option>
+                <option value="Steampunk">Steampunk</option>
                 <option value="Cyberpunk">Cyberpunk</option>
                 <option value="Fantasy Art">Fantasy Art</option>
                 <option value="Film Noir">Film Noir</option>
-                <option value="Watercolor">Watercolor</option>
-                <option value="Pixel Art">Pixel Art</option>
               </select>
             </div>
 
@@ -452,12 +480,20 @@
               <label for="photos-style">Visual Style</label>
               <select id="photos-style">
                 <option value="Cinematic">Cinematic</option>
+                <option value="Photographic">Photographic</option>
                 <option value="Anime">Anime</option>
+                <option value="Manga">Manga</option>
                 <option value="Ghibli-esque">Ghibli-esque</option>
                 <option value="Disney-esque">Disney-esque</option>
                 <option value="Comic Book">Comic Book</option>
+                <option value="Graphic Novel">Graphic Novel</option>
+                <option value="Watercolor">Watercolor</option>
+                <option value="Low Poly">Low Poly</option>
+                <option value="Pixel Art">Pixel Art</option>
+                <option value="Steampunk">Steampunk</option>
                 <option value="Cyberpunk">Cyberpunk</option>
                 <option value="Fantasy Art">Fantasy Art</option>
+                <option value="Film Noir">Film Noir</option>
               </select>
             </div>
 
@@ -474,6 +510,172 @@
         </form>
 
         <div id="photos-response" class="response-section"></div>
+      </div>
+
+      <!-- Story Ideas Tab -->
+      <div id="ideas-tab" class="tab-content">
+        <h2>Story Ideas</h2>
+        <p class="help-text">Click any idea to use it in the Complete Storybook generator.</p>
+
+        <div style="margin-top: 20px;">
+          <h3 style="color: #495057; margin-bottom: 15px;">👶 Children's Storybooks (30 ideas)</h3>
+          <div class="styles-list">
+            <div class="idea-card" onclick="useIdea('A tiny mouse discovers a magical library hidden inside an old oak tree')">
+              <p>A tiny mouse discovers a magical library hidden inside an old oak tree</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young dragon who is afraid of fire learns to overcome his fear')">
+              <p>A young dragon who is afraid of fire learns to overcome his fear</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A lonely cloud makes friends with birds who teach her how to dance')">
+              <p>A lonely cloud makes friends with birds who teach her how to dance</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A brave bunny helps a lost star find its way back to the night sky')">
+              <p>A brave bunny helps a lost star find its way back to the night sky</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A curious caterpillar dreams of flying and builds herself wings from leaves')">
+              <p>A curious caterpillar dreams of flying and builds herself wings from leaves</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A shy turtle learns to come out of his shell to save his friends')">
+              <p>A shy turtle learns to come out of his shell to save his friends</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A magical paintbrush brings everything it draws to life for one special day')">
+              <p>A magical paintbrush brings everything it draws to life for one special day</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young fox discovers a secret garden where vegetables sing and dance')">
+              <p>A young fox discovers a secret garden where vegetables sing and dance</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A lighthouse keeper befriends a whale who tells stories of the deep ocean')">
+              <p>A lighthouse keeper befriends a whale who tells stories of the deep ocean</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A teddy bear comes alive at night to protect children from bad dreams')">
+              <p>A teddy bear comes alive at night to protect children from bad dreams</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A little seed travels on the wind to find the perfect place to grow')">
+              <p>A little seed travels on the wind to find the perfect place to grow</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A penguin who loves warmth journeys to find the legendary Hot Springs of Antarctica')">
+              <p>A penguin who loves warmth journeys to find the legendary Hot Springs of Antarctica</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young wizard accidentally turns everything in town invisible and must fix it')">
+              <p>A young wizard accidentally turns everything in town invisible and must fix it</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A paper airplane escapes from a classroom to see the world')">
+              <p>A paper airplane escapes from a classroom to see the world</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A moonbeam comes down to Earth to play with children before dawn')">
+              <p>A moonbeam comes down to Earth to play with children before dawn</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A clockwork robot learns what it means to have a heart')">
+              <p>A clockwork robot learns what it means to have a heart</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A mischievous kitten discovers a door to a world made entirely of yarn')">
+              <p>A mischievous kitten discovers a door to a world made entirely of yarn</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A raindrop embarks on an adventure from cloud to ocean')">
+              <p>A raindrop embarks on an adventure from cloud to ocean</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young girl finds a music box that plays songs from different countries')">
+              <p>A young girl finds a music box that plays songs from different countries</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A friendly monster under the bed helps children face their fears')">
+              <p>A friendly monster under the bed helps children face their fears</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A snowflake wishes to see spring before melting away')">
+              <p>A snowflake wishes to see spring before melting away</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A brave ladybug leads her friends on a quest across the garden')">
+              <p>A brave ladybug leads her friends on a quest across the garden</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A baby elephant learns to use his trunk to help others in the jungle')">
+              <p>A baby elephant learns to use his trunk to help others in the jungle</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A magical treehouse transports kids to different worlds each night')">
+              <p>A magical treehouse transports kids to different worlds each night</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A butterfly teaches a grumpy bee about the beauty of teamwork')">
+              <p>A butterfly teaches a grumpy bee about the beauty of teamwork</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young owl who is afraid of the dark learns to love the night')">
+              <p>A young owl who is afraid of the dark learns to love the night</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A sock puppet escapes the laundry to find its missing pair')">
+              <p>A sock puppet escapes the laundry to find its missing pair</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young inventor builds a rocket ship from cardboard to visit the moon')">
+              <p>A young inventor builds a rocket ship from cardboard to visit the moon</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A rainbow loses its colors and must find them before the next storm')">
+              <p>A rainbow loses its colors and must find them before the next storm</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A little firefly helps guide lost travelers through a dark forest')">
+              <p>A little firefly helps guide lost travelers through a dark forest</p>
+            </div>
+          </div>
+
+          <h3 style="color: #495057; margin: 30px 0 15px;">🎬 General Audience (20 ideas)</h3>
+          <div class="styles-list">
+            <div class="idea-card" onclick="useIdea('A time traveler accidentally changes history and must fix the timeline')">
+              <p>A time traveler accidentally changes history and must fix the timeline</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A detective solves mysteries in a cyberpunk city where memories can be stolen')">
+              <p>A detective solves mysteries in a cyberpunk city where memories can be stolen</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A young inventor builds a flying machine to cross a vast canyon')">
+              <p>A young inventor builds a flying machine to cross a vast canyon</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A chef discovers a cookbook that creates dishes from parallel universes')">
+              <p>A chef discovers a cookbook that creates dishes from parallel universes</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('An astronaut stranded on Mars befriends an ancient alien civilization')">
+              <p>An astronaut stranded on Mars befriends an ancient alien civilization</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A musician finds an instrument that can control the weather')">
+              <p>A musician finds an instrument that can control the weather</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A librarian protects books that contain doorways to other worlds')">
+              <p>A librarian protects books that contain doorways to other worlds</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A street artist paints murals that predict the future')">
+              <p>A street artist paints murals that predict the future</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A archaeologist uncovers a map to a city that exists in multiple dimensions')">
+              <p>A archaeologist uncovers a map to a city that exists in multiple dimensions</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A hacker discovers that reality is a simulation and decides to break out')">
+              <p>A hacker discovers that reality is a simulation and decides to break out</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A ghost hunter realizes they have been dead all along')">
+              <p>A ghost hunter realizes they have been dead all along</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A gardener cultivates plants that grow thoughts instead of flowers')">
+              <p>A gardener cultivates plants that grow thoughts instead of flowers</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A barista serves coffee that gives customers glimpses of alternate lives')">
+              <p>A barista serves coffee that gives customers glimpses of alternate lives</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A photographer captures images that show the past and future of any location')">
+              <p>A photographer captures images that show the past and future of any location</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A watchmaker repairs timepieces that control moments in people lives')">
+              <p>A watchmaker repairs timepieces that control moments in people lives</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A submarine crew discovers an underwater civilization that has been hidden for millennia')">
+              <p>A submarine crew discovers an underwater civilization that has been hidden for millennia</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A dancer performs in a theater where every show changes reality')">
+              <p>A dancer performs in a theater where every show changes reality</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A florist arranges bouquets that heal emotional wounds')">
+              <p>A florist arranges bouquets that heal emotional wounds</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A pilot navigates storms that exist between different worlds')">
+              <p>A pilot navigates storms that exist between different worlds</p>
+            </div>
+            <div class="idea-card" onclick="useIdea('A toymaker creates dolls that come alive to protect their owners')">
+              <p>A toymaker creates dolls that come alive to protect their owners</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Styles Tab -->
@@ -499,6 +701,20 @@
       // Update tab content
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       document.getElementById(`${tabName}-tab`).classList.add('active');
+    }
+
+    function useIdea(idea) {
+      // Switch to Complete Storybook tab
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector('.tab').classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById('complete-tab').classList.add('active');
+
+      // Fill in the idea
+      document.getElementById('complete-idea').value = idea;
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function showLoading(responseId) {
