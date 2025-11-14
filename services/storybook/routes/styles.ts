@@ -21,7 +21,7 @@ stylesRoute.get('/', async (c) => {
 
     const styles = getAllStyles();
 
-    console.log(\`✅ Returning \${styles.length} available styles\`);
+    console.log(`✅ Returning \${styles.length} available styles`);
     console.log('='.repeat(80) + '\n');
 
     return c.json({
@@ -58,14 +58,16 @@ stylesRoute.get('/:name', async (c) => {
   try {
     const styleName = c.req.param('name');
     const styles = getAllStyles();
-    const style = styles.find(s => s.name.toLowerCase() === styleName.toLowerCase());
+    const style = styles.find(
+      (s) => s.name.toLowerCase() === styleName.toLowerCase()
+    );
 
     if (!style) {
       return c.json(
         {
           success: false,
           error: {
-            error: \`Style not found: \${styleName}\`,
+            error: `Style not found: ${styleName}`,
             code: 'STYLE_NOT_FOUND',
           },
         },

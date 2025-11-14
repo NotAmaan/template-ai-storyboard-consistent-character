@@ -5,7 +5,11 @@
  */
 
 import { GoogleGenAI } from '@google/genai';
-import { getStyleConfig, generateTimestamp, sanitizeFilename } from './utils.js';
+import {
+  getStyleConfig,
+  generateTimestamp,
+  sanitizeFilename,
+} from './utils.js';
 import type { StoryboardData, StoryboardScene } from '../schemas/index.js';
 import path from 'path';
 import fs from 'fs';
@@ -27,13 +31,17 @@ export async function generateSingleImage(
 
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!apiKey) {
-    throw new Error('GOOGLE_GENERATIVE_AI_API_KEY not found in environment variables');
+    throw new Error(
+      'GOOGLE_GENERATIVE_AI_API_KEY not found in environment variables'
+    );
   }
 
   const styleConfig = getStyleConfig(style);
   const fullPrompt = `${styleConfig.prefix} ${prompt}${styleConfig.suffix}`;
 
-  console.log(`📝 [Image Generator] Full prompt: ${fullPrompt.substring(0, 100)}...`);
+  console.log(
+    `📝 [Image Generator] Full prompt: ${fullPrompt.substring(0, 100)}...`
+  );
 
   const ai = new GoogleGenAI({ apiKey });
   const startTime = Date.now();
@@ -42,13 +50,15 @@ export async function generateSingleImage(
     console.log('🚀 [Image Generator] Calling Google Imagen API...');
 
     const response = await ai.models.generateImages({
-      model: 'imagen-3.0-generate-002',
+      model: 'imagen-4.0-generate-001',
       prompt: fullPrompt,
       config: { numberOfImages: 1, outputMimeType: 'image/jpeg' },
     });
 
     const generationTime = Date.now() - startTime;
-    console.log(`✅ [Image Generator] API call completed in ${generationTime}ms`);
+    console.log(
+      `✅ [Image Generator] API call completed in ${generationTime}ms`
+    );
 
     if (!response.generatedImages || response.generatedImages.length === 0) {
       throw new Error('No images returned from Imagen API');
@@ -62,7 +72,9 @@ export async function generateSingleImage(
     const base64ImageBytes: string = image.imageBytes;
     const imageData = `data:image/jpeg;base64,${base64ImageBytes}`;
 
-    console.log(`📊 [Image Generator] Image data size: ${base64ImageBytes.length} characters`);
+    console.log(
+      `📊 [Image Generator] Image data size: ${base64ImageBytes.length} characters`
+    );
 
     // Save image locally
     const imagePath = await saveImageLocally(imageData, prompt);
@@ -79,7 +91,10 @@ export async function generateSingleImage(
 /**
  * Save image data to local file system
  */
-async function saveImageLocally(imageData: string, prompt: string): Promise<string> {
+async function saveImageLocally(
+  imageData: string,
+  prompt: string
+): Promise<string> {
   console.log('💾 [Image Save] Saving image to disk...');
 
   try {
@@ -114,7 +129,11 @@ async function saveImageLocally(imageData: string, prompt: string): Promise<stri
     return filename;
   } catch (error) {
     console.error('❌ [Image Save] Error saving image:', error);
-    throw new Error(`Failed to save image: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(
+      `Failed to save image: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
+    );
   }
 }
 
@@ -125,20 +144,28 @@ export async function generateStoryboardImages(
   storyboard: StoryboardData,
   style: string,
   sceneNumbers?: number[]
-): Promise<{ storyboard: StoryboardData; generatedCount: number; generationTime: number }> {
+): Promise<{
+  storyboard: StoryboardData;
+  generatedCount: number;
+  generationTime: number;
+}> {
   console.log('🎬 [Image Generator] Starting storyboard image generation...');
   console.log(`📊 [Image Generator] Total scenes: ${storyboard.scenes.length}`);
   console.log(`🎭 [Image Generator] Style: ${style}`);
 
   if (sceneNumbers) {
-    console.log(`🔢 [Image Generator] Generating for scenes: ${sceneNumbers.join(', ')}`);
+    console.log(
+      `🔢 [Image Generator] Generating for scenes: ${sceneNumbers.join(', ')}`
+    );
   }
 
   const startTime = Date.now();
   let generatedCount = 0;
 
   // Create a copy of the storyboard to modify
-  const updatedStoryboard: StoryboardData = JSON.parse(JSON.stringify(storyboard));
+  const updatedStoryboard: StoryboardData = JSON.parse(
+    JSON.stringify(storyboard)
+  );
 
   try {
     for (const scene of updatedStoryboard.scenes) {
@@ -150,14 +177,21 @@ export async function generateStoryboardImages(
 
       // Skip if scene already has an image
       if (scene.imagePath || scene.imageUrl) {
-        console.log(`⏭️ [Image Generator] Scene ${scene.sceneNumber} already has an image`);
+        console.log(
+          `⏭️ [Image Generator] Scene ${scene.sceneNumber} already has an image`
+        );
         continue;
       }
 
-      console.log(`\n🖼️ [Image Generator] Generating image for scene ${scene.sceneNumber}...`);
+      console.log(
+        `\n🖼️ [Image Generator] Generating image for scene ${scene.sceneNumber}...`
+      );
 
       try {
-        const { imageData, imagePath } = await generateSingleImage(scene.imagePrompt, style);
+        const { imageData, imagePath } = await generateSingleImage(
+          scene.imagePrompt,
+          style
+        );
 
         // Update scene with image path
         scene.imagePath = imagePath;
@@ -168,10 +202,13 @@ export async function generateStoryboardImages(
 
         // Add a small delay to avoid rate limiting
         if (generatedCount < updatedStoryboard.scenes.length) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
         }
       } catch (error) {
-        console.error(`❌ [Image Generator] Failed to generate image for scene ${scene.sceneNumber}:`, error);
+        console.error(
+          `❌ [Image Generator] Failed to generate image for scene ${scene.sceneNumber}:`,
+          error
+        );
         // Continue with other scenes even if one fails
         scene.imagePath = 'error';
         scene.imageUrl = '';
@@ -181,7 +218,9 @@ export async function generateStoryboardImages(
     const totalTime = Date.now() - startTime;
 
     console.log(`\n🎉 [Image Generator] Storyboard image generation complete!`);
-    console.log(`📊 [Image Generator] Generated ${generatedCount} images in ${totalTime}ms`);
+    console.log(
+      `📊 [Image Generator] Generated ${generatedCount} images in ${totalTime}ms`
+    );
 
     return {
       storyboard: updatedStoryboard,
@@ -189,7 +228,10 @@ export async function generateStoryboardImages(
       generationTime: totalTime,
     };
   } catch (error) {
-    console.error('❌ [Image Generator] Error during storyboard image generation:', error);
+    console.error(
+      '❌ [Image Generator] Error during storyboard image generation:',
+      error
+    );
     throw error;
   }
 }
@@ -207,7 +249,9 @@ export async function createStoryboardFromScript(
   console.log(`📊 [Storyboard Creator] Target images: ${numberOfImages}`);
 
   // Use the storyboard agent to create the structure
-  const { storyboardAgent } = await import('../../../src/mastra/agents/storyboard-agent.js');
+  const { storyboardAgent } = await import(
+    '../../../src/mastra/agents/storyboard-agent.js'
+  );
   const { RuntimeContext } = await import('@mastra/core/runtime-context');
 
   const runtimeContext = new RuntimeContext();
@@ -259,7 +303,9 @@ export async function createStoryboardFromScript(
   };
 
   console.log('✅ [Storyboard Creator] Storyboard structure created');
-  console.log(`📊 [Storyboard Creator] Scenes: ${storyboard.scenes.length}, Characters: ${storyboard.metadata.characterCount}`);
+  console.log(
+    `📊 [Storyboard Creator] Scenes: ${storyboard.scenes.length}, Characters: ${storyboard.metadata.characterCount}`
+  );
 
   return storyboard;
 }
