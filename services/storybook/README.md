@@ -47,6 +47,21 @@ npm run services:start
 
 The server will start on `http://localhost:3000` by default (configurable via `PORT` environment variable).
 
+### Interactive Web UI
+
+Once the server is running, open your browser and navigate to:
+
+**http://localhost:3000/**
+
+The UI provides:
+- 📝 **Script Generation**: Generate screenplays from story ideas
+- 🖼️ **Image Generation**: Create images for storyboard scenes
+- 🎬 **Complete Storybook**: One-click generation of script + images
+- 🎨 **Style Browser**: Explore all 15 available visual styles
+- ✅ **Real-time Preview**: See generated images and JSON responses immediately
+
+The UI is a single-page application with tabs for each service, form validation, loading states, and beautiful image previews.
+
 ## API Endpoints
 
 ### 1. Generate Script

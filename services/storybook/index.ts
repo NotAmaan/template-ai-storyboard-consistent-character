@@ -27,6 +27,12 @@ import { photosRoute } from './routes/photos.js';
 import { storybooksRoute } from './routes/storybooks.js';
 import { stylesRoute } from './routes/styles.js';
 import { validateEnvironment } from './lib/utils.js';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Create main Hono app
 const app = new Hono();
@@ -73,9 +79,23 @@ app.get('/health', (c) => {
 
 /**
  * GET /
- * API information and available endpoints
+ * Serve the interactive UI
  */
 app.get('/', (c) => {
+  try {
+    const htmlPath = path.join(__dirname, 'public', 'index.html');
+    const html = readFileSync(htmlPath, 'utf-8');
+    return c.html(html);
+  } catch (error) {
+    return c.text('UI not found. Visit /api for API documentation.', 404);
+  }
+});
+
+/**
+ * GET /api
+ * API information and available endpoints
+ */
+app.get('/api', (c) => {
   return c.json({
     service: 'Storybook Services',
     version: '1.0.0',
@@ -237,14 +257,14 @@ if (!envCheck.valid) {
 
 console.log('✅ Environment validated');
 console.log(\`🚀 Server starting on port \${PORT}\`);
-console.log('📋 Available endpoints:');
-console.log('  - POST /storybook/script');
-console.log('  - POST /storybook/photos');
-console.log('  - POST /storybooks');
-console.log('  - GET  /storybook/styles');
-console.log('  - GET  /storybook/styles/:name');
-console.log('  - GET  /health');
-console.log('  - GET  /');
+console.log(\`\n🌐 Interactive UI: http://localhost:\${PORT}/\`);
+console.log(\`📖 API Documentation: http://localhost:\${PORT}/api\`);
+console.log('\n📋 API Endpoints:');
+console.log('  - POST /storybook/script      - Generate screenplay');
+console.log('  - POST /storybook/photos      - Generate images');
+console.log('  - POST /storybooks            - Complete storybook');
+console.log('  - GET  /storybook/styles      - List styles');
+console.log('  - GET  /health                - Health check');
 console.log('='.repeat(80) + '\n');
 
 export default {
