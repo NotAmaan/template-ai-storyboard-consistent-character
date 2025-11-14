@@ -10,6 +10,7 @@ import { CompleteStoryboardRequestSchema } from '../schemas/index.js';
 import { generateScript } from '../lib/script-generator.js';
 import { createStoryboardFromScript, generateStoryboardImages } from '../lib/image-generator.js';
 import { formatError, isValidStyle } from '../lib/utils.js';
+import { logRequest, logError, logStory, logResponse } from '../lib/logger.js';
 import type { Script } from '../schemas/index.js';
 
 export const storybooksRoute = new Hono();
@@ -19,15 +20,25 @@ export const storybooksRoute = new Hono();
  * Generate a complete storyboard from an idea or script
  */
 storybooksRoute.post('/', zValidator('json', CompleteStoryboardRequestSchema), async (c) => {
-  try {
-    const request = c.req.valid('json');
+  const overallStartTime = Date.now();
+  const request = c.req.valid('json');
 
+  // Log request
+  logRequest('/storybooks', 'POST', {
+    hasIdea: !!request.idea,
+    hasScript: !!request.script,
+    style: request.style,
+    numberOfImages: request.numberOfImages
+  });
+
+  try {
     console.log('\n' + '='.repeat(80));
     console.log('🎬 POST /storybooks - Complete Storyboard Generation Request');
     console.log('='.repeat(80));
 
     // Validate style
     if (!isValidStyle(request.style)) {
+      logResponse('/storybooks', false, Date.now() - overallStartTime);
       return c.json(
         {
           success: false,
@@ -39,10 +50,9 @@ storybooksRoute.post('/', zValidator('json', CompleteStoryboardRequestSchema), a
         400
       );
     }
-
-    const overallStartTime = Date.now();
     let script: Script | undefined;
     let scriptContent: string;
+    let scriptTime = 0;
 
     // Step 1: Generate or use existing script
     if (request.idea) {
@@ -58,7 +68,7 @@ storybooksRoute.post('/', zValidator('json', CompleteStoryboardRequestSchema), a
 
       scriptContent = script.content;
 
-      const scriptTime = Date.now() - scriptStartTime;
+      scriptTime = Date.now() - scriptStartTime;
       console.log(`✅ Script generated in ${scriptTime}ms`);
     } else if (request.script) {
       console.log('📝 Step 1: Using provided script...');
@@ -98,10 +108,26 @@ storybooksRoute.post('/', zValidator('json', CompleteStoryboardRequestSchema), a
 
     console.log('\n✅ Complete storyboard generation finished!');
     console.log(`⏱️ Total time: ${totalTime}ms`);
-    console.log(`  - Script: ${script ? scriptTime : 0}ms`);
+    console.log(`  - Script: ${scriptTime}ms`);
     console.log(`  - Storyboard: ${storyboardTime}ms`);
     console.log(`  - Images: ${imageTime}ms`);
     console.log('='.repeat(80) + '\n');
+
+    // Log successful generation
+    logStory('complete', {
+      script: script,
+      storyboard: result.storyboard
+    }, {
+      idea: request.idea,
+      title: request.title,
+      style: request.style,
+      numberOfImages: request.numberOfImages
+    });
+    logResponse('/storybooks', true, totalTime, {
+      hasScript: !!script,
+      imagesGenerated: result.generatedCount,
+      style: request.style
+    });
 
     return c.json({
       success: true,
@@ -112,7 +138,7 @@ storybooksRoute.post('/', zValidator('json', CompleteStoryboardRequestSchema), a
       },
       meta: {
         breakdown: {
-          scriptGeneration: script ? scriptTime : 0,
+          scriptGeneration: scriptTime,
           storyboardCreation: storyboardTime,
           imageGeneration: imageTime,
           total: totalTime,
@@ -121,7 +147,15 @@ storybooksRoute.post('/', zValidator('json', CompleteStoryboardRequestSchema), a
       },
     });
   } catch (error) {
+    const totalTime = Date.now() - overallStartTime;
     console.error('❌ Error in complete storyboard generation:', error);
+
+    // Log error
+    logError('/storybooks', error, {
+      idea: request.idea,
+      style: request.style
+    });
+    logResponse('/storybooks', false, totalTime);
 
     return c.json(
       {

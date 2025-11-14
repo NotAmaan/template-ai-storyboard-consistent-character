@@ -9,6 +9,7 @@ import { zValidator } from '@hono/zod-validator';
 import { PhotoGenerationRequestSchema } from '../schemas/index.js';
 import { generateStoryboardImages } from '../lib/image-generator.js';
 import { formatError, isValidStyle } from '../lib/utils.js';
+import { logRequest, logError, logResponse } from '../lib/logger.js';
 
 export const photosRoute = new Hono();
 
@@ -17,15 +18,23 @@ export const photosRoute = new Hono();
  * Generate images for storyboard scenes
  */
 photosRoute.post('/', zValidator('json', PhotoGenerationRequestSchema), async (c) => {
-  try {
-    const request = c.req.valid('json');
+  const startTime = Date.now();
+  const request = c.req.valid('json');
 
+  // Log request
+  logRequest('/storybook/photos', 'POST', {
+    style: request.style,
+    sceneCount: request.storyboard.scenes.length
+  });
+
+  try {
     console.log('\n' + '='.repeat(80));
     console.log('🖼️ POST /storybook/photos - Photo Generation Request');
     console.log('='.repeat(80));
 
     // Validate style
     if (!isValidStyle(request.style)) {
+      logResponse('/storybook/photos', false, Date.now() - startTime);
       return c.json(
         {
           success: false,
@@ -37,8 +46,6 @@ photosRoute.post('/', zValidator('json', PhotoGenerationRequestSchema), async (c
         400
       );
     }
-
-    const startTime = Date.now();
 
     // Generate images for the storyboard
     const result = await generateStoryboardImages(
@@ -52,6 +59,12 @@ photosRoute.post('/', zValidator('json', PhotoGenerationRequestSchema), async (c
     console.log('✅ Photo generation completed successfully');
     console.log(`⏱️ Total time: ${totalTime}ms`);
     console.log('='.repeat(80) + '\n');
+
+    // Log successful generation
+    logResponse('/storybook/photos', true, totalTime, {
+      imagesGenerated: result.generatedCount,
+      style: request.style
+    });
 
     return c.json({
       success: true,
@@ -67,7 +80,12 @@ photosRoute.post('/', zValidator('json', PhotoGenerationRequestSchema), async (c
       },
     });
   } catch (error) {
+    const totalTime = Date.now() - startTime;
     console.error('❌ Error in photo generation endpoint:', error);
+
+    // Log error
+    logError('/storybook/photos', error, { style: request.style });
+    logResponse('/storybook/photos', false, totalTime);
 
     return c.json(
       {
